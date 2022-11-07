@@ -1,3 +1,3 @@
-module com.karan.microservices.learn
+module kvlearn
 
 go 1.18
