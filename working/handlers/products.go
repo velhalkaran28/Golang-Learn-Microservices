@@ -1,3 +1,17 @@
+// Package classification of Product API
+//
+// Documentation for Product API
+//
+// Schemes:http
+// BasePath: /
+// Version: 1.0.0
+//
+// Consumes:
+// - application/json
+//
+// Produces:
+// - application/json
+// swagger:meta
 package handlers
 
 import (
@@ -11,6 +25,23 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// A list of products returned in a response
+// swagger:response productsResponse
+type productsResponse struct {
+	// All products in the system
+	// in: body
+	Body struct {
+		ID          int     `json:"id"`
+		Name        string  `json:"name" validate:"required"`
+		Description string  `json:"description"`
+		Price       float32 `json:"price" validate:"gte=0"`
+		SKU         string  `json:"sku" validate:"required,sku"`
+		CreatedOn   string  `json:"-"`
+		UpdatedOn   string  `json:"-"`
+		DeletedOn   string  `json:"-"`
+	}
+}
+
 type Products struct {
 	l *log.Logger
 }
@@ -18,6 +49,11 @@ type Products struct {
 func NewProduct(l *log.Logger) *Products {
 	return &Products{l}
 }
+
+//swagger:route GET /products products listProducts
+// Returns a list of products
+// responses:
+// 200: productsResponse
 
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	lp := data.GetProducts()
