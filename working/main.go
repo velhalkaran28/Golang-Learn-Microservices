@@ -11,6 +11,7 @@ import (
 	"kvlearn/handlers"
 
 	"github.com/go-openapi/runtime/middleware"
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -34,6 +35,8 @@ func main() {
 	sh := middleware.Redoc(ops, nil)
 	getRouter.Handle("/docs", sh)
 	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
+
+	gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
 
 	s := &http.Server{
 		Addr:         ":9090",
